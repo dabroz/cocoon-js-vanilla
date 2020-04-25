@@ -34,27 +34,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  function cocoonDetach (node) {
+  var cocoonDetach = function (node) {
     return node.parentElement.removeChild(node);
-  }
+  };
 
-  function cocoonGetPreviousSibling (elem, selector) {
-    console.log('cocoonGetPreviousSibling[' + elem + '][' + selector + ']');
-    console.log('>' + elem.innerHTML + '<');
+  var cocoonGetPreviousSibling = function (elem, selector) {
     var sibling = elem.previousElementSibling;
-    console.log('first->' + sibling);
 
     if (!selector) return sibling;
 
     while (sibling) {
       var match = sibling.matches(selector);
-      console.log('Try [' + match + '] against [' + selector + '] -> ' + match);
       if (match) return sibling;
       sibling = sibling.previousElementSibling;
     }
   };
 
-  function cocoonAddFields (e, target) {
+  var cocoonAddFields = function (e, target) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -123,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  function cocoonRemoveFields (e, target) {
+  var cocoonRemoveFields = function (e, target) {
     var thisNode = target;
     var wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
     var nodeToDelete = thisNode.closest('.' + wrapperClass);
@@ -151,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
         triggerNode.dispatchEvent(afterRemove);
       }, timeout);
     }
-  }
+  };
 
   document.addEventListener('click', function (e) {
     for (var target = e.target; target && target !== this; target = target.parentNode) {
@@ -166,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, false);
 
+  // TODO
   /* $(document).on('ready page:load turbolinks:load', function () {
     $('.remove_fields.existing.destroyed').each(function (i, obj) {
       var thisNode = $(this);

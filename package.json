@@ -1,6 +1,6 @@
 {
   "name": "cocoon-js-vanilla",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Webpacker compatible cocoon rubygem code (without jQuery dependency) from https://github.com/nathanvda/cocoon",
   "main": "index.js",
   "scripts": {
