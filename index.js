@@ -164,14 +164,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   }, false);
-
-  // TODO
-  /* $(document).on('ready page:load turbolinks:load', function () {
-    $('.remove_fields.existing.destroyed').each(function (i, obj) {
-      var thisNode = $(this);
-      var wrapperClass = thisNode.data('wrapper-class') || 'nested-fields';
-
-      thisNode.closest('.' + wrapperClass).hide();
-    });
-  }); */
 });
+
+// TODO - Test this
+// document.addEventListener("DOMContentLoaded page:load turbolinks:load", function () {
+//   var destroyedFields = document.querySelectorAll(".remove_fields.existing.destroyed");
+//   Array.prototype.forEach.call(destroyedFields, function (el) {
+//     var wrapperClass = el.getAttribute("data-wrapper-class") || "nested-fields";
+//     el.closest("." + wrapperClass).style.display = "none";
+//   });
+// });
