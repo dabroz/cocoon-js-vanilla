@@ -108,7 +108,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // code and doesn't force it to be a sibling like after/before does. default: 'before'
         // TODO: add more htmpMappings
         var htmlMapping = {
-          append: 'beforeend'
+          before: 'beforebegin',
+          prepend: 'afterbegin',
+          append: 'beforeend',
+          after: 'afterend',
         };
         var htmlMethod = htmlMapping[insertionMethod];
         var addedContent = insertionNodeElem.insertAdjacentHTML(htmlMethod, contentNode);
