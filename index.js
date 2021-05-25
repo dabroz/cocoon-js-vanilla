@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     newContents.forEach(function (node, i) {
       var contentNode = node;
 
-      var beforeInsert = new CustomEvent('cocoon:before-insert', { detail: [contentNode, originalEvent] });
+      var beforeInsert = new CustomEvent('cocoon:before-insert', { cancelable: true, detail: [contentNode, originalEvent] });
       insertionNodeElem.dispatchEvent(beforeInsert);
 
       if (!beforeInsert.defaultPrevented) {
