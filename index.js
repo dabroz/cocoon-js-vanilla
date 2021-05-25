@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     e.stopPropagation();
 
-    var beforeRemove = new CustomEvent('cocoon:before-remove', { detail: [nodeToDelete, originalEvent] });
+    var beforeRemove = new CustomEvent('cocoon:before-remove', { cancelable: true, detail: [nodeToDelete, originalEvent] });
     triggerNode.dispatchEvent(beforeRemove);
 
     if (!beforeRemove.defaultPrevented) {
