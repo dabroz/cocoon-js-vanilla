@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
           before: 'beforebegin',
           prepend: 'afterbegin',
           append: 'beforeend',
-          after: 'afterend',
+          after: 'afterend'
         };
 
         var htmlMethod = htmlMapping[insertionMethod];
