@@ -112,8 +112,19 @@ document.addEventListener('DOMContentLoaded', function () {
           append: 'beforeend',
           after: 'afterend',
         };
+
         var htmlMethod = htmlMapping[insertionMethod];
         var addedContent = insertionNodeElem.insertAdjacentHTML(htmlMethod, contentNode);
+
+        if (htmlMethod === htmlMapping.before) {
+          addedContent = insertionNodeElem.previousElementSibling;
+        } else if (htmlMethod === htmlMapping.prepend) {
+          addedContent = insertionNodeElem.firstElementChild;
+        } else if (htmlMethod === htmlMapping.append) {
+          addedContent = insertionNodeElem.lastElementChild;
+        } else if (htmlMethod === htmlMapping.after) {
+          addedContent = insertionNodeElem.nextElementSibling;
+        }
 
         var afterInsert = new CustomEvent('cocoon:after-insert', { detail: [contentNode, originalEvent, addedContent] });
         insertionNodeElem.dispatchEvent(afterInsert);
