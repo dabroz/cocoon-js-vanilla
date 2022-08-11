@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     newContents.forEach(function (node, i) {
       var contentNode = node;
 
-      var beforeInsert = new CustomEvent('cocoon:before-insert', { cancelable: true, detail: [contentNode, originalEvent] });
+      var beforeInsert = new CustomEvent('cocoon:before-insert', { bubbles: true, cancelable: true, detail: [contentNode, originalEvent] });
       insertionNodeElem.dispatchEvent(beforeInsert);
 
       if (!beforeInsert.defaultPrevented) {
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var htmlMethod = htmlMapping[insertionMethod];
         var addedContent = insertionNodeElem.insertAdjacentHTML(htmlMethod, contentNode);
 
-        var afterInsert = new CustomEvent('cocoon:after-insert', { detail: [contentNode, originalEvent, addedContent] });
+        var afterInsert = new CustomEvent('cocoon:after-insert', { bubbles: true, detail: [contentNode, originalEvent, addedContent] });
         insertionNodeElem.dispatchEvent(afterInsert);
       }
     });
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     e.stopPropagation();
 
-    var beforeRemove = new CustomEvent('cocoon:before-remove', { cancelable: true, detail: [nodeToDelete, originalEvent] });
+    var beforeRemove = new CustomEvent('cocoon:before-remove', { bubbles: true, cancelable: true, detail: [nodeToDelete, originalEvent] });
     triggerNode.dispatchEvent(beforeRemove);
 
     if (!beforeRemove.defaultPrevented) {
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
           hiddenInput.value = '1';
           nodeToDelete.style.display = 'none';
         }
-        var afterRemove = new CustomEvent('cocoon:after-remove', { detail: [nodeToDelete, originalEvent] });
+        var afterRemove = new CustomEvent('cocoon:after-remove', { bubbles: true, detail: [nodeToDelete, originalEvent] });
         triggerNode.dispatchEvent(afterRemove);
       }, timeout);
     }
