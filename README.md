@@ -2,7 +2,7 @@
 Contains the Javascript dependency for the [cocoon](https://github.com/nathanvda/cocoon) rubygem without jQuery dependency. 
 
 # Why
-After two days of fighting with `cocoon:after-insert` not firing, I've decided to do the sane thing and re-write Cocoon JS to vanilla JS without Javascript.
+After two days of fighting with `cocoon:after-insert` not firing, I've decided to do the sane thing and re-write Cocoon JS to vanilla JS without jQuery.
 
 # How to use 
 - Install the [cocoon] rubygem as usual
