@@ -155,6 +155,11 @@ document.addEventListener('DOMContentLoaded', function () {
           var hiddenInput = cocoonGetPreviousSibling(thisNode, 'input[type=hidden]');
           hiddenInput.value = '1';
           nodeToDelete.style.display = 'none';
+
+          var inputs = nodeToDelete.querySelectorAll("input[required]");
+          for (var i = 0; i < inputs.length; i++) {
+            inputs[i].removeAttribute("required");
+          }
         }
         var afterRemove = new CustomEvent('cocoon:after-remove', { bubbles: true, detail: [nodeToDelete, originalEvent] });
         triggerNode.dispatchEvent(afterRemove);
