@@ -179,6 +179,23 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   }, false);
+
+  var hideRemoveFields = function () {    
+    var targets = document.querySelectorAll('.remove_fields.existing.destroyed');
+    for (var i = 0; i < targets.length; i++) {
+      var thisNode = targets[i];
+      var wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
+      var nodeToHide = thisNode.closest('.' + wrapperClass);
+      
+      nodeToHide.style.display = 'none';
+    }
+  }
+
+  document.addEventListener('page:load', hideRemoveFields);
+  document.addEventListener('turbolinks:load', hideRemoveFields); // Has been replaced by Turbo
+  document.addEventListener('turbo:load', hideRemoveFields);
+
+  hideRemoveFields();
 });
 
 // TODO - Test this
