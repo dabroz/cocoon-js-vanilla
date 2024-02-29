@@ -195,5 +195,5 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('turbolinks:load', hideRemovedFields); // Has been replaced by Turbo
   document.addEventListener('turbo:load', hideRemovedFields);
 
-  hideRemoveFields();
+  hideRemovedFields();
 });
