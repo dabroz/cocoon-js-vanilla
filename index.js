@@ -1,19 +1,19 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var cocoonElementCounter = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  let cocoonElementCounter = 0;
 
-  var createNewID = function () {
+  const createNewID = function () {
     return (new Date().getTime() + cocoonElementCounter++);
   };
 
-  var newcontentBraced = function (id) {
-    return '[' + id + ']$1';
+  const newcontentBraced = function (id) {
+    return `[${id}]$1`;
   };
 
-  var newcontentUnderscored = function (id) {
-    return '_' + id + '_$1';
+  const newcontentUnderscored = function (id) {
+    return `_${id}_$1`;
   };
 
-  var getInsertionNodeElem = function (insertionNode, insertionTraversal, thisNode) {
+  const getInsertionNodeElem = function (insertionNode, insertionTraversal, thisNode) {
     if (!insertionNode) {
       return thisNode.parentNode;
     }
@@ -28,50 +28,49 @@ document.addEventListener('DOMContentLoaded', function () {
     if (typeof insertionNode === 'string') {
       if (insertionTraversal) {
         return thisNode[insertionTraversal](insertionNode);
-      } else {
-        return insertionNode === 'this' ? thisNode : document.querySelector(insertionNode);
       }
+      return insertionNode === 'this' ? thisNode : document.querySelector(insertionNode);
     }
   };
 
-  var cocoonDetach = function (node) {
+  const cocoonDetach = function (node) {
     return node.parentElement.removeChild(node);
   };
 
-  var cocoonGetPreviousSibling = function (elem, selector) {
-    var sibling = elem.previousElementSibling;
+  const cocoonGetPreviousSibling = function (elem, selector) {
+    let sibling = elem.previousElementSibling;
 
     if (!selector) return sibling;
 
     while (sibling) {
-      var match = sibling.matches(selector);
+      const match = sibling.matches(selector);
       if (match) return sibling;
       sibling = sibling.previousElementSibling;
     }
   };
 
-  var cocoonAddFields = function (e, target) {
+  const cocoonAddFields = function (e, target) {
     e.preventDefault();
     e.stopPropagation();
 
-    var thisNode = target;
-    var assoc = thisNode.getAttribute('data-association');
-    var assocs = thisNode.getAttribute('data-associations');
-    var content = thisNode.getAttribute('data-association-insertion-template');
-    var insertionMethod = thisNode.getAttribute('data-association-insertion-method') || thisNode.getAttribute('data-association-insertion-position') || 'before';
-    var insertionNode = thisNode.getAttribute('data-association-insertion-node');
-    var insertionTraversal = thisNode.getAttribute('data-association-insertion-traversal');
-    var count = parseInt(thisNode.getAttribute('data-count'), 10);
-    var regexpBraced = new RegExp('\\[new_' + assoc + '\\](.*?\\s)', 'g');
-    var regexpUnderscored = new RegExp('_new_' + assoc + '_(\\w*)', 'g');
-    var newId = createNewID();
-    var newContent = content.replace(regexpBraced, newcontentBraced(newId));
-    var newContents = [];
-    var originalEvent = e;
+    const thisNode = target;
+    const assoc = thisNode.getAttribute('data-association');
+    const assocs = thisNode.getAttribute('data-associations');
+    const content = thisNode.getAttribute('data-association-insertion-template');
+    const insertionMethod = thisNode.getAttribute('data-association-insertion-method') || thisNode.getAttribute('data-association-insertion-position') || 'before';
+    const insertionNode = thisNode.getAttribute('data-association-insertion-node');
+    const insertionTraversal = thisNode.getAttribute('data-association-insertion-traversal');
+    let count = parseInt(thisNode.getAttribute('data-count'), 10);
+    let regexpBraced = new RegExp(`\\[new_${assoc}\\](.*?\\s)`, 'g');
+    let regexpUnderscored = new RegExp(`_new_${assoc}_(\\w*)`, 'g');
+    let newId = createNewID();
+    let newContent = content.replace(regexpBraced, newcontentBraced(newId));
+    let newContents = [];
+    const originalEvent = e;
 
     if (newContent === content) {
-      regexpBraced = new RegExp('\\[new_' + assocs + '\\](.*?\\s)', 'g');
-      regexpUnderscored = new RegExp('_new_' + assocs + '_(\\w*)', 'g');
+      regexpBraced = new RegExp(`\\[new_${assocs}\\](.*?\\s)`, 'g');
+      regexpUnderscored = new RegExp(`_new_${assocs}_(\\w*)`, 'g');
       newContent = content.replace(regexpBraced, newcontentBraced(newId));
     }
 
@@ -90,31 +89,31 @@ document.addEventListener('DOMContentLoaded', function () {
       count -= 1;
     }
 
-    var insertionNodeElem = getInsertionNodeElem(insertionNode, insertionTraversal, thisNode);
+    const insertionNodeElem = getInsertionNodeElem(insertionNode, insertionTraversal, thisNode);
 
     if (!insertionNodeElem || (insertionNodeElem.length === 0)) {
       console.warn("Couldn't find the element to insert the template. Make sure your `data-association-insertion-*` on `link_to_add_association` is correct.");
     }
 
-    newContents.forEach(function (node, i) {
-      var contentNode = node;
+    newContents.forEach((node, i) => {
+      const contentNode = node;
 
-      var beforeInsert = new CustomEvent('cocoon:before-insert', { bubbles: true, cancelable: true, detail: [contentNode, originalEvent] });
+      const beforeInsert = new CustomEvent('cocoon:before-insert', { bubbles: true, cancelable: true, detail: [contentNode, originalEvent] });
       insertionNodeElem.dispatchEvent(beforeInsert);
 
       if (!beforeInsert.defaultPrevented) {
         // allow any of the jquery dom manipulation methods (after, before, append, prepend, etc)
         // to be called on the node.  allows the insertion node to be the parent of the inserted
         // code and doesn't force it to be a sibling like after/before does. default: 'before'
-        var htmlMapping = {
+        const htmlMapping = {
           before: 'beforebegin',
           prepend: 'afterbegin',
           append: 'beforeend',
-          after: 'afterend'
+          after: 'afterend',
         };
 
-        var htmlMethod = htmlMapping[insertionMethod];
-        var addedContent = insertionNodeElem.insertAdjacentHTML(htmlMethod, contentNode);
+        const htmlMethod = htmlMapping[insertionMethod];
+        let addedContent = insertionNodeElem.insertAdjacentHTML(htmlMethod, contentNode);
 
         if (htmlMethod === htmlMapping.before) {
           addedContent = insertionNodeElem.previousElementSibling;
@@ -126,49 +125,49 @@ document.addEventListener('DOMContentLoaded', function () {
           addedContent = insertionNodeElem.nextElementSibling;
         }
 
-        var afterInsert = new CustomEvent('cocoon:after-insert', { bubbles: true, detail: [contentNode, originalEvent, addedContent] });
+        const afterInsert = new CustomEvent('cocoon:after-insert', { bubbles: true, detail: [contentNode, originalEvent, addedContent] });
         insertionNodeElem.dispatchEvent(afterInsert);
       }
     });
   };
 
-  var cocoonRemoveFields = function (e, target) {
-    var thisNode = target;
-    var wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
-    var nodeToDelete = thisNode.closest('.' + wrapperClass);
-    var triggerNode = nodeToDelete.parentNode;
-    var originalEvent = e;
+  const cocoonRemoveFields = function (e, target) {
+    const thisNode = target;
+    const wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
+    const nodeToDelete = thisNode.closest(`.${wrapperClass}`);
+    const triggerNode = nodeToDelete.parentNode;
+    const originalEvent = e;
 
     e.preventDefault();
     e.stopPropagation();
 
-    var beforeRemove = new CustomEvent('cocoon:before-remove', { bubbles: true, cancelable: true, detail: [nodeToDelete, originalEvent] });
+    const beforeRemove = new CustomEvent('cocoon:before-remove', { bubbles: true, cancelable: true, detail: [nodeToDelete, originalEvent] });
     triggerNode.dispatchEvent(beforeRemove);
 
     if (!beforeRemove.defaultPrevented) {
-      var timeout = triggerNode.getAttribute('data-remove-timeout') || 0;
+      const timeout = triggerNode.getAttribute('data-remove-timeout') || 0;
 
-      setTimeout(function () {
+      setTimeout(() => {
         if (thisNode.classList.contains('dynamic')) {
           cocoonDetach(nodeToDelete);
         } else {
-          var hiddenInput = cocoonGetPreviousSibling(thisNode, 'input[type=hidden]');
+          const hiddenInput = cocoonGetPreviousSibling(thisNode, 'input[type=hidden]');
           hiddenInput.value = '1';
           nodeToDelete.style.display = 'none';
 
-          var inputs = nodeToDelete.querySelectorAll("input[required]");
-          for (var i = 0; i < inputs.length; i++) {
-            inputs[i].removeAttribute("required");
+          const inputs = nodeToDelete.querySelectorAll('input[required]');
+          for (let i = 0; i < inputs.length; i++) {
+            inputs[i].removeAttribute('required');
           }
         }
-        var afterRemove = new CustomEvent('cocoon:after-remove', { bubbles: true, detail: [nodeToDelete, originalEvent] });
+        const afterRemove = new CustomEvent('cocoon:after-remove', { bubbles: true, detail: [nodeToDelete, originalEvent] });
         triggerNode.dispatchEvent(afterRemove);
       }, timeout);
     }
   };
 
   document.addEventListener('click', function (e) {
-    for (var target = e.target; target && target !== this; target = target.parentNode) {
+    for (let { target } = e; target && target !== this; target = target.parentNode) {
       if (target.matches('.add_fields')) {
         cocoonAddFields(e, target);
         return;
@@ -180,16 +179,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, false);
 
-  var hideRemovedFields = function () {    
-    var targets = document.querySelectorAll('.remove_fields.existing.destroyed');
-    for (var i = 0; i < targets.length; i++) {
-      var thisNode = targets[i];
-      var wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
-      var nodeToHide = thisNode.closest('.' + wrapperClass);
-      
+  const hideRemovedFields = function () {
+    const targets = document.querySelectorAll('.remove_fields.existing.destroyed');
+    for (let i = 0; i < targets.length; i++) {
+      const thisNode = targets[i];
+      const wrapperClass = thisNode.getAttribute('data-wrapper-class') || 'nested-fields';
+      const nodeToHide = thisNode.closest(`.${wrapperClass}`);
+
       nodeToHide.style.display = 'none';
     }
-  }
+  };
 
   document.addEventListener('page:load', hideRemovedFields);
   document.addEventListener('turbolinks:load', hideRemovedFields); // Has been replaced by Turbo
