@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, false);
 
-  var hideRemoveFields = function () {    
+  var hideRemovedFields = function () {    
     var targets = document.querySelectorAll('.remove_fields.existing.destroyed');
     for (var i = 0; i < targets.length; i++) {
       var thisNode = targets[i];
@@ -191,18 +191,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  document.addEventListener('page:load', hideRemoveFields);
-  document.addEventListener('turbolinks:load', hideRemoveFields); // Has been replaced by Turbo
-  document.addEventListener('turbo:load', hideRemoveFields);
+  document.addEventListener('page:load', hideRemovedFields);
+  document.addEventListener('turbolinks:load', hideRemovedFields); // Has been replaced by Turbo
+  document.addEventListener('turbo:load', hideRemovedFields);
 
   hideRemoveFields();
 });
-
-// TODO - Test this
-// document.addEventListener("DOMContentLoaded page:load turbolinks:load", function () {
-//   var destroyedFields = document.querySelectorAll(".remove_fields.existing.destroyed");
-//   Array.prototype.forEach.call(destroyedFields, function (el) {
-//     var wrapperClass = el.getAttribute("data-wrapper-class") || "nested-fields";
-//     el.closest("." + wrapperClass).style.display = "none";
-//   });
-// });
